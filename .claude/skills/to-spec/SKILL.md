@@ -10,7 +10,11 @@ Collapse what the current conversation settled into a written spec, then publish
 
 **No interview.** This skill synthesises what was already decided. If questions remain open, the conversation was not finished — go back to `/grill-with-docs`. A spec that papers over an unresolved branch buys nothing.
 
-The issue tracker was configured by `/setup-skills` — read `docs/agents/issue-tracker.md`. If it is missing, run `/setup-skills` first.
+When publishing to a tracker, read `docs/agents/issue-tracker.md` for its setup. If it is missing, run `/setup-skills` first.
+
+## Project document mode
+
+When the user explicitly requests a local PRD, SRS, or other named specification and supplies its destination or template, use that shape and location for this run. Keep its existing requirement IDs and provenance. Review the draft with the user, then save only the requested document. Use the tracker publishing workflow below for the default mode.
 
 ## Shape
 
@@ -55,7 +59,7 @@ Specs written before IDs existed get numbered **on demand** — a promise takes 
 
 ## Rules
 
-- **Use the project's vocabulary.** Read `CONTEXT.md` first. A spec that invents its own words forces a translation step on every reader.
+- **Use the project's vocabulary.** Read `CONTEXT.md` when present. A spec that invents its own words forces a translation step on every reader.
 - **A promise that cannot be enumerated is not a promise.** 「登入要好用」 cannot be traced or tested; 「會員以正確憑證登入後導向儀表板」 can. A Scope line that resists being written as a numbered promise means the conversation left it vague — that belongs under Open questions, not under a number.
 - **Behaviour, not implementation.** The spec says what must be true. How to build it is `/to-tickets` and `/implement`.
 - **Do not invent.** Anything not settled in the conversation goes under Open questions. Filling a gap with a plausible guess is how a spec quietly becomes wrong.
