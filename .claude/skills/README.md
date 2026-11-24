@@ -1,6 +1,6 @@
 # 這個專案的工具鏈
 
-36 個給 coding agent 用的工程技能，外加 `/roast`、`/seduce` 兩個輸出風格。**fork 下來打開 Claude Code 就能用**，不需要安裝任何東西。
+36 個給 coding agent 用的工程技能，外加 `/roast`、`/seduce` 兩個輸出風格。依[環境設定](../../01-SETUP.md)在 Claude Code 或 Codex 中啟用。
 
 Claude Code 會自動載入專案的 `.claude/skills/`，GitHub Copilot 也讀同一個路徑。
 Codex 讀 `.agents/skills/`，本 repo 用 symlink 指到這裡，所以是同一份；在 Codex 裡用 `$技能名` 呼叫。
@@ -19,7 +19,7 @@ Codex 讀 `.agents/skills/`，本 repo 用 symlink 指到這裡，所以是同�
 
 改的時候記得三件事：
 
-1. **`compass/SKILL.md` 要同步**（你的專案另外維護 `docs/SKILL-MAP.md` 的話，那份也要）。路由表指路，改了技能沒改表，學生會照著找不到的東西操作 —— 使用者觸發的技能更嚴重，它沒有 description 在模型 context 裡，表沒提到就只剩人的記憶能觸發它。
+1. **`compass/SKILL.md` 要同步**（你的專案另外維護 `docs/SKILL-MAP.md` 的話，那份也要）。路由表指路，改了技能沒改表，使用者會找不到對應技能 —— 使用者觸發的技能更嚴重，它沒有 description 在模型 context 裡，表沒提到就只剩人的記憶能觸發它。
 2. **frontmatter 前不能有任何字元**，包括空行。多一個空行，Claude Code 會靜默略過整個技能，而且不會告訴你。
 3. **`name` 必須等於資料夾名。**
 
@@ -61,7 +61,7 @@ bash scripts/check.sh
 
 ## 附帶的 guard hooks
 
-`setup-skills/hooks/` 有三支 shell hook，由 `/setup-skills` 複製進**你自己的專案**（不是這個教材 repo）：
+`setup-skills/hooks/` 有三支 shell hook，由 `/setup-skills` 複製進**你自己的專案**：
 
 | Hook | 擋什麼 |
 |---|---|
@@ -69,11 +69,11 @@ bash scripts/check.sh
 | `guard-secrets.sh` | staged diff 裡出現憑證字面值時擋下 `git commit` |
 | `check-on-stop.sh` | 停止時的檢查 |
 
-每支都有內附測試（`test-*.sh`），本 repo 驗過三支全 pass。
+每支都有內附測試（`test-*.sh`），可用 `bash scripts/check.sh` 執行。
 
-這個教材 repo 自己裝了前兩支。Claude Code 登記在 `.claude/settings.json`，Codex 登記在 `.codex/hooks.json`，腳本同一份。輸出風格打 `/roast`、`/seduce`（Codex 用 `$roast`、`$seduce`），去讀 `.claude/output-styles/`。
+本模板已安裝前兩支。Claude Code 登記在 `.claude/settings.json`，Codex 登記在 `.codex/hooks.json`，腳本同一份。輸出風格打 `/roast`、`/seduce`（Codex 用 `$roast`、`$seduce`），去讀 `.claude/output-styles/`。
 
-**為什麼要 hook 而不是寫在 `CLAUDE.md`**：散文規則大約只有七成遵守率，這幾條紅線靠 exit code 2，不靠模型記得。這正是心法篇不變量 5「邊界是防線，不是建議」。
+Guard hooks 會在匹配的操作觸發時檢查條件，並以失敗狀態阻止違規操作。
 
 ---
 
@@ -88,10 +88,10 @@ bash scripts/check.sh
 - 範例中的人名與執行代號改為中性佔位符
 - `setup-skills` 的 Section E 改為從技能自己的 `hooks/` 取檔（原本要從上游 repo 的 symlink target 解析路徑，在複製而非連結的情況下解不出來）
 - guard hooks 隨 `setup-skills` 一起打包
-- 流程圖改繪為本課的站點劃分
+- 流程圖改繪為本模板的流程階段
 - 中文用詞改為台灣慣用語（如 tracer bullet 的中文說法改為「垂直切片」）
 - 使用者觸發的技能加上 `agents/openai.yaml`，讓 Codex 也只在使用者呼叫時啟動
-- 教材 repo 的兩支 guard 同時登記到 `.codex/hooks.json`（Codex 不讀 `.claude/settings.json`）
+- 模板的兩支 guard 同時登記到 `.codex/hooks.json`（Codex 不讀 `.claude/settings.json`）
 - 輸出風格 `roast`、`seduce` 放進技能目錄。Codex 掃 `.agents/skills/`，不掃 `.codex/skills/`
 
 完整授權聲明見 [`THIRD-PARTY-NOTICES.md`](../../THIRD-PARTY-NOTICES.md)。**那份聲明是 MIT 的要求，不要移除。**

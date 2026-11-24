@@ -1,70 +1,54 @@
-# 課前準備：先能用工具，再進入學生專案
+# 專案環境設定
 
-第一天在獨立練習資料夾做作品；第二天才使用 LeaveBot。本課以 Claude Code 示範，Codex 可使用同一組通用 skills；模型與工具權限不同時，Demo 結果分開記錄。
+## 專案根目錄
 
-## 1．工具與帳號
-
-- GitHub：能登入並 fork 專案。
-- Claude Code 或 Codex：依官方安裝與帳號說明設定，實際啟動後能完成一次小任務。帳號方案與額度以官方當時資訊為準。
-- Git：`git --version` 有版本號。
-- Python 3.12：macOS/Linux 用 `python3 --version`；Windows 用 `py -3.12 --version`。
-- 瀏覽器、編輯器；Node 可執行 repo 內 Archify（最低18；選受支援版本並課前試跑），context7／playwright MCP 也需要 Node。
-
-[Claude Code 官方安裝說明](https://code.claude.com/docs/en/setup)、[Codex CLI 官方說明](https://developers.openai.com/codex/cli/)、[Codex skills 官方說明](https://developers.openai.com/codex/skills/)。先確認能登入與執行，再確認專案層設定；不把安裝完成當成全部工具接通。
-
-**主線不需要應用程式用的 Anthropic API key。** C4/C5 才需要另外準備；Agent 登入費用與成品內 LLM API 是不同用途。
-
-## 2．第一天的練習位置
-
-建立與 LeaveBot 分開的資料夾，例如 `vibe-day1/`，每題再分 `reference-v1/`、`tarot-v1/`。用相同工具與時間比較時，記下模型、Harness、素材與人工介入。不要從 LeaveBot 根目錄產生塔羅或動畫，避免請假規格干擾。
-
-## 3．取得第二天學生專案
-
-Fork `https://github.com/Zenobia000/leavebot-bootcamp` 的 main，**只複製main即可**。使用自己的 fork clone，再設定講師 upstream：
+在 VS Code 開啟包含 `.git`、`AGENTS.md` 和 `.githooks` 的資料夾。在終端機確認位置並啟用此倉庫的 Git hooks。代理程式的 Bash 防護 hook 也需能從執行環境找到 `jq`。
 
 ```bash
-git clone https://github.com/<你的帳號>/leavebot-bootcamp.git
-cd leavebot-bootcamp
-git remote add upstream https://github.com/Zenobia000/leavebot-bootcamp.git
-git fetch upstream
-git branch -r
+git rev-parse --show-toplevel
+git config --local core.hooksPath .githooks
+git config --local --get core.hooksPath
 ```
 
-Checkpoint 是否可用以 [CHECKPOINTS](../02-補充/02-CHECKPOINTS.md) 與遠端實際分支為準。缺少時先詢問講師，不重 fork、不切不存在的分支。
+最後一行應回傳 `.githooks`。使用 Claude Code 或 Codex 的 VS Code 擴充套件，或從同一個根目錄啟動相應的 CLI。
 
-Windows 的 `.agents/skills` 需要符號連結權限。使用 Codex 前確認該路徑連到 `../.claude/skills`，不是只有路徑文字的普通檔案；若 clone 前未啟用連結，請講師協助重建連結。不要刪除已有學生成果重 clone。
+## Windows
 
-## 4．套件預熱（不建立 app）
+Codex 從 `.agents/skills` 讀取共用技能。這個路徑在 Git 內是一個相對符號連結，指向 `../.claude/skills`。先在 Windows 設定啟用「開發人員模式」，或使用具建立符號連結權限的終端機。
 
-可在 LeaveBot 根目錄先建未追蹤的 `.venv`，下載主線套件：
+新 clone 時可為此次操作啟用連結，將下方的 URL 換成你的 Git 倉庫網址。
 
-macOS/Linux：
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -c course/01-上課/05-constraints.txt fastapi uvicorn httpx pytest
-.venv/bin/python -c "import fastapi, uvicorn, httpx, pytest; print('ok')"
-```
-
-Windows PowerShell：
 ```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\python.exe -m pip install -c course/01-上課/05-constraints.txt fastapi uvicorn httpx pytest
-.venv\Scripts\python.exe -c "import fastapi, uvicorn, httpx, pytest; print('ok')"
+git clone -c core.symlinks=true 'https://github.com/OWNER/REPOSITORY.git'
 ```
 
-第二天生成 `pyproject.toml` 後，再依 STACK 安裝 `-e ".[dev]"`。不需先產業務程式，也不需要刪除 venv。
+如果你已有工作副本，且 `.agents/skills` 是內容只有 `../.claude/skills` 的普通文字檔，請先確認它沒有自己的修改。從專案根目錄執行下列指令，只重建該路徑。
 
-## 5．開場連線檢查
+```powershell
+git status --short -- .agents/skills
+git config --local core.symlinks true
+git checkout-index --force -- .agents/skills
+Get-Item -Force .agents/skills | Select-Object LinkType, Target
+Test-Path .agents/skills/compass/SKILL.md
+```
 
-從 repo 根目錄打開工具，讀 `AGENTS.md` 與 [WORKFLOW](02-WORKFLOW.md)。用 `/compass`（Codex：`$compass`）要求建議下一步、所讀資料及產出；確認它依本課路線回答，而非只數技能。
+第一行應無輸出。完成後應顯示 `SymbolicLink`，最後一行應回傳 `True`。若建立連結仍出現權限錯誤，先確認 Windows 已允許建立符號連結，再執行重建。
 
-有 Node 的人先跑：
+## 自訂專案
+
+- 填寫 [AGENTS.md](AGENTS.md) 的專案目標、規格位置、安裝、執行與測試指令。技術、執行環境和部署方式由專案自己決定。
+- 需要設定領域文件或發布規格、工作票時，執行 Claude Code 的 `/setup-skills` 或 Codex 的 `$setup-skills`。可選擇本機檔案、遠端議題追蹤器或團隊已有的流程。確認後，技能會將位置與操作方式寫進 `docs/agents/`。
+- 依 [工作流程](02-WORKFLOW.md) 選擇當前階段，或者呼叫 `/compass`（Codex 用 `$compass`）。
+
+## 驗證模板
+
+檢查腳本使用 Git、Bash、Python 3（`python3` 或 `python`）及 `jq`。Windows 可在具備這些工具的 Bash 環境執行。
+
 ```bash
-node .claude/skills/archify/bin/archify.mjs doctor
+git --version
+python3 --version  # Windows Git Bash 也可用 python --version
+jq --version
+bash scripts/check.sh
 ```
 
-請 Agent 實際用 playwright 開啟一頁並回報標題，再用 context7 查一個 FastAPI 操作。沒有接通就記下實際錯誤；由人開瀏覽器、查官方文件或用 Mermaid 接續，不宣稱工具已驗證。
-
-## 常見阻礙
-
-公司網路阻擋安裝／套件下載時，先找 IT 或依公司允許方式處理。套件錯誤先看完整輸出與 Python 版本，不把所有安裝失敗都歸因版本。Archify 不能執行時先採 Mermaid；環境問題交給講師，不消耗整堂實作時間。
+這組檢查涵蓋技能定義、路由、Claude Code／Codex 設定對應，以及 hooks 的回歸案例。缺少 `jq` 時，腳本會標記 hooks 測試已略過。

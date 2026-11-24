@@ -12,7 +12,9 @@ A **flow** is a path through the skills. Most work runs along one **main flow**;
 
 ## Precondition
 
-**`/setup-skills`** — run once per repo before any engineering flow. It records where issues live and where domain docs go. Skills that publish to a tracker are wrong without it.
+**`/setup-skills`** records where issues and domain documents live. Run it before a workflow that publishes to a tracker or needs those settings. For a standalone local task, start from the requested stage.
+
+If [02-WORKFLOW.md](../../../02-WORKFLOW.md) is present, use its prompts and templates when the user chooses a documented workflow. Match the level of documentation to the project and the change.
 
 ## Main flow: idea → ship
 
@@ -29,7 +31,7 @@ A **flow** is a path through the skills. Most work runs along one **main flow**;
 4. **Branch — does someone have to *see* that it works?** → **`/uat-cases`** derives the frozen, numbered TC list from the spec; **`/browser-evidence`** runs that fixed list into deliverable evidence — screenshots, raw responses. Skip when nobody is asking for proof.
 5. **Ship it** → the Git flow below.
 
-`/implement` drives `/tdd` internally and closes with `/code-review` before committing. Reach for `/tdd` alone to build one concrete behaviour test-first; `/code-review` alone to review any branch against a fixed point.
+`/implement` drives `/tdd` internally and closes with `/code-review` before reporting or making an authorized commit. Reach for `/tdd` alone to build one concrete behaviour test-first; `/code-review` alone to review a branch against a fixed point or a requested set of working-tree changes.
 
 ### Context hygiene
 
@@ -77,4 +79,3 @@ Reach for these when the **words**, not the process, are the problem.
 - **`/domain-modeling`** — the project's domain language. Challenge a fuzzy term, split an overloaded one, record a hard-to-reverse decision as an ADR.
 - **`/grilling`** — the interview primitive `/grill-with-docs` and `/wayfinder` both run.
 - **`/diagram`** — picks the diagram the audience and the occasion actually call for, then draws it; **`/svg-palette`** is the colour discipline it draws with.
-

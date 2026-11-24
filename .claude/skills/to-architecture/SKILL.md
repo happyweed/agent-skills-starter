@@ -10,7 +10,11 @@ Turn a spec into the technical decisions the tickets will depend on: tech stack,
 
 **Optional step.** A one-session change, or a change inside an architecture that already exists, does not need this. Reach for it when the spec spans multiple sessions and the tech choices are genuinely open.
 
-The issue tracker and docs layout were configured by `/setup-skills` — read `docs/agents/`. If missing, run `/setup-skills` first.
+Read `docs/agents/` when present for the project's architecture and decision locations. Use the paths supplied by the user or the default below when the project has no configured layout.
+
+## Project document mode
+
+When the user explicitly requests separate architecture and design documents (such as SAD and SDS), use the project's templates and requested paths. Apply the decision and review rules below, and distinguish maintained design references from temporary scaffolding. Report the confirmed documents and ADRs after writing. Only documents identified as temporary scaffolding are candidates for cleanup.
 
 ## Shape
 
@@ -45,7 +49,7 @@ No target measured or promised → this section is absent.
 - **This document is scaffolding, not truth.** Every durable decision must already live in an ADR or a ticket before it appears here — deleting this file must lose nothing. Nobody maintains a per-feature spec after merge; git history is the archive.
 - **Decisions, not ceremony.** No C4 diagram levels, no NFR boilerplate, no security checklist. A section with nothing settled in it does not appear.
 - **Do not invent.** The material is the spec and the conversation. An open tech choice goes back to `/grill-with-docs` or gets a `/prototype` detour — it does not get a plausible default.
-- **Use the project's vocabulary.** Read `CONTEXT.md` first; the data model must use its terms.
+- **Use the project's vocabulary.** Read `CONTEXT.md` when present and use its terms in the data model.
 - **Show the draft before writing.** Let the user edit, then write the file and the ADRs.
 
 ## Finish

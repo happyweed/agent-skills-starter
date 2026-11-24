@@ -2,18 +2,17 @@
 
 `.claude/hooks/` 的 agent guard 保護 agent 的工具呼叫（Claude Code 登記在 `.claude/settings.json`，
 Codex 登記在 `.codex/hooks.json`）；這裡的 Git hooks 同時保護人與任何 agent 的 Git 操作。
-啟用：`git config core.hooksPath .githooks`。
 
 | Hook | 阻擋 |
 |---|---|
 | `pre-commit` | 真實 `.env` 與疑似硬編碼 API key |
 | `pre-push` | 對 `main`、`master` 的非快轉 push |
 
-每個 clone 啟用一次：
+每個 clone 從專案根目錄啟用一次。
 
 ```bash
-git config core.hooksPath .githooks
-chmod +x .githooks/*
+git config --local core.hooksPath .githooks
+git config --local --get core.hooksPath
 ```
 
 Hook 是不可逆風險的最低保護，不取代 tests、review 或使用者授權。不要把 `--no-verify` 寫進自動化流程。

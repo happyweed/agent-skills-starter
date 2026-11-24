@@ -23,7 +23,7 @@ Running the interview from memory of what those skills say is how their rules si
 
 Respond in the session's language throughout, whatever language this file is written in.
 
-Read `CONTEXT.md` before the first question so the vocabulary you use is the project's, not invented. Read any ADRs covering the area being discussed — a question already settled by an ADR is a fact to look up, not a decision to ask.
+If `CONTEXT.md` exists, read it before the first question. For a new project, start with the user's vocabulary and the project materials. Read any ADRs covering the area being discussed — a question already settled by an ADR is a fact to look up, not a decision to ask.
 
 When a question turns on **what a word means**, stop and run `/domain-modeling` on that term before continuing. An interview built on an overloaded word produces decisions that dissolve on contact with code.
 

@@ -5,7 +5,7 @@ description: 沿兩條軸審查自某個定點以來的 diff — Standards（有
 
 # Code Review
 
-Two-axis review of the diff between `HEAD` and a fixed point.
+Two-axis review of the user-selected change set.
 
 - **Standards** — does the code conform to this repo's conventions?
 - **Spec** — does it faithfully implement the originating ticket or spec?
@@ -16,7 +16,7 @@ Run both as **parallel sub-agents** so neither pollutes the other's context, the
 
 Whatever the user gave: a SHA, a branch, a tag, `main`, `HEAD~5`. If they gave nothing, ask. Reviewing against a merge-base you assumed is reviewing a different diff than they meant.
 
-`git diff <point>...HEAD` — the diff, not the file tree.
+For committed changes, use `git diff <point>...HEAD`. If the user selects working-tree changes, inspect the requested staged and unstaged diffs and check for relevant untracked files within scope. Use the same selected scope for both review axes.
 
 ## 2. Standards axis
 

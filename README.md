@@ -1,56 +1,23 @@
 # agent-skills-starter
 
-> 一個 **Claude Code 與 Codex 共用**的專案起點：38 個工程技能、agent 護欄、Git 安全閘門，開出來就能用，不用安裝。
+供 Claude Code 與 Codex 共用的專案模板。包含 38 個技能、從構想到交付的工作流程、文件範本，以及 Git 和代理程式的防護 hooks。可用來製作網站、應用程式、工具、自動化流程，也能用於既有專案的功能變更。
 
-按 GitHub 上的 **Use this template** 開一個新 repo，或 fork 下來改。
+## 開始使用
 
----
+1. 在 GitHub 選 **Use this template** 建立新倉庫，或 clone 一份來調整。Windows 請先看[符號連結設定](01-SETUP.md#windows)。
+2. 用 VS Code 開啟包含 `.git` 的專案根目錄，依 [環境設定](01-SETUP.md) 啟用 Git hooks。
+3. 將 [AGENTS.md](AGENTS.md) 的佔位符換成專案目的、規格位置、執行方式與限制。需要設定議題追蹤或領域文件時，在 Claude Code 輸入 `/setup-skills`，或在 Codex 輸入 `$setup-skills`。
+4. 從[工作流程](02-WORKFLOW.md) 選擇當前階段。不確定該用哪個技能時，在 Claude Code 輸入 `/compass`，或在 Codex 輸入 `$compass`。
 
-## 開出來之後做三件事
+## 可自訂的內容
 
-```bash
-git config core.hooksPath .githooks     # 1. 打開 Git 安全閘門
-claude                                  # 2. 或 codex
-```
-
-3. 在 agent 裡打 `/setup-skills`（Codex：`$setup-skills`）。它會問你議題放哪、領域文件放哪，寫進 `docs/agents/` —— 拆票、寫規格類的技能靠這份設定。
-
-之後不知道用哪個技能，打 **`/compass`**（Codex：`$compass`）。
-
-再把 `AGENTS.md` 的 ＜＞ 換成你的專案內容。
-
-⚠️ Windows：clone **之前**先跑 `git config --global core.symlinks true`（要開「開發人員模式」），否則 Codex 找不到技能。
-
----
-
-## 裡面有什麼
-
-| 位置 | 是什麼 |
+| 位置 | 用途 |
 |---|---|
-| `.claude/skills/` | 38 個技能：從需求拷問、規格、架構、拆票、TDD、code review 到 Git 流程。另有兩個輸出風格 `/roast`、`/seduce` |
-| `.agents/skills` | 指向 `.claude/skills` 的 symlink，Codex 從這裡讀同一份 |
-| `.claude/hooks/` | 兩支 agent guard：擋一次 `git add` 全部、force push、`reset --hard` 到別處、跳過 git hook、提交疑似金鑰 |
-| `.claude/settings.json`／`.codex/hooks.json` | 同一對 guard，兩個工具各自登記 |
-| `.githooks/` | Git 層的閘門，人和 agent 都擋 |
-| `scripts/check.sh` | 一個指令檢查全部：技能 frontmatter、路由表同步、Codex 設定同步、guard 測試 |
-| `AGENTS.md`／`CLAUDE.md` | 專案大腦的空白骨架 |
+| [AGENTS.md](AGENTS.md) | 專案目的、規格來源、技術限制與驗證指令。`CLAUDE.md` 匯入這份規則。 |
+| [02-WORKFLOW.md](02-WORKFLOW.md) | 依工作規模選擇步驟，並查找各階段輸入、產出與驗收條件。 |
+| [prompts/](prompts/) | 可複製到聊天框的階段提示詞。 |
+| [templates/](templates/00-README.md) | 需求、設計、測試、追溯與經驗紀錄範本。 |
+| [.claude/skills/](.claude/skills/README.md) | 技能來源及維護方式。`.agents/skills` 連到同一份來源，供 Codex 使用。 |
+| [.githooks/](.githooks/README.md) | Git 提交與推送檢查。Claude Code 和 Codex 的代理程式 hooks 另由各自的設定檔登記。 |
 
-## 只支援 Claude Code 與 Codex
-
-技能用「只准使用者觸發」區分編排型技能（例如 `/compass`、`/to-tickets`）。
-Claude Code 讀 `SKILL.md` 的 `disable-model-invocation`，Codex 讀 `agents/openai.yaml`，兩邊由 `scripts/check-codex-skills.sh` 擋不同步。
-Antigravity、Copilot 不認這個設定，編排型技能會被 agent 自己啟動。⚠️ Cursor 未驗證。
-
-## 改技能
-
-技能是你的，可以改。規矩只有三條，寫在 [`.claude/skills/README.md`](./.claude/skills/README.md)，改完跑：
-
-```bash
-bash scripts/check.sh
-```
-
-## 來源與授權
-
-技能衍生自 [luca-skills](https://github.com/Luca0x5755/luca-skills)（MIT），經 [SDD-agent-coding-beginner](https://github.com/Zenobia000/SDD-agent-coding-beginner) 修改。聲明見 [`THIRD-PARTY-NOTICES.md`](./THIRD-PARTY-NOTICES.md)，**不要刪**。
-
-想看這套技能怎麼用在一個實際題目上：[`leavebot-bootcamp`](https://github.com/Zenobia000/leavebot-bootcamp)。
+調整技能後，依[環境設定](01-SETUP.md#驗證模板)執行 `bash scripts/check.sh`。來源與授權見 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。

@@ -11,10 +11,21 @@ cd "$(git rev-parse --show-toplevel)" || exit 1
 
 found=0
 
-python3 -c 'import json; json.load(open(".codex/hooks.json"))' 2>/dev/null || {
+python_command=
+for candidate in python3 python; do
+  if "$candidate" -c 'import sys; sys.exit(sys.version_info.major != 3)' >/dev/null 2>&1; then
+    python_command=$candidate
+    break
+  fi
+done
+
+if [ -z "$python_command" ]; then
+  echo "找不到可執行的 Python 3（python3 或 python）"
+  found=1
+elif ! "$python_command" -c 'import json; json.load(open(".codex/hooks.json", encoding="utf-8"))' 2>/dev/null; then
   echo ".codex/hooks.json 不是合法 JSON"
   found=1
-}
+fi
 
 for s in guard-git.sh guard-secrets.sh; do
   [ -f ".claude/hooks/$s" ] || { echo "缺腳本  .claude/hooks/$s"; found=1; }

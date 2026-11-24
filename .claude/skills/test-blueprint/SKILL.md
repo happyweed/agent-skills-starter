@@ -10,6 +10,10 @@ Analyze a project and propose its test blueprint — which layers exist, what ea
 
 The line the whole skill runs on: **judgment crystallizes into scripts.** Same input, same output, runs unattended → a script or config file, generated here. Reading a spec, weighing cost against risk, choosing policy → judgment, and every judgment in this skill ends as a proposal a human approves.
 
+## Document-only mode
+
+When the user explicitly requests a standalone test plan, use the selected template and path. Inventory the confirmed requirements, existing tests and public seams. Select risk-based cases with independently derived expectations, requirement IDs, environment, acceptance criteria and a place for evidence. Review the draft before saving only the requested plan. Record cases without execution evidence as not run. The full blueprint and generation workflow below applies when the user requests test infrastructure or a blueprint.
+
 ## 0. Read the existing blueprint
 
 A `docs/test-blueprint.md` already present means revision mode: the proposal in step 3 becomes a delta against it, never a fresh document. No file means first run; [`TEMPLATE.md`](TEMPLATE.md) starts it.
